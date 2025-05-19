@@ -23,6 +23,7 @@ require (
 	github.com/crate-crypto/go-kzg-4844 v1.0.0 // indirect
 	github.com/deckarep/golang-set/v2 v2.6.0 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
+	github.com/dmitryikh/leaves v0.0.0-20230708180554-25d19a787328 // indirect
 	github.com/ethereum/c-kzg-4844 v1.0.0 // indirect
 	github.com/ethereum/go-verkle v0.1.1-0.20240829091221-dffa7562dbe9 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect

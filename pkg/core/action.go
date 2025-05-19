@@ -9,25 +9,11 @@ import (
 )
 
 const (
-	ActionTypeExecuteTrade ActionType = iota
-	ActionTypeUpdateState
-	// Add more action types as needed
+	ActionSetKeyValue ActionType = iota
 	ActionTypeSendTransaction
 	ActionTypeFlashbots
 	ActionTypeMEVShare
 )
-
-// ExecuteTradeAction represents an action to execute a trade
-type ExecuteTradeAction struct {
-	Asset     string
-	Amount    string
-	Price     string
-	TradeType string
-}
-
-func (a ExecuteTradeAction) Type() ActionType {
-	return ActionTypeExecuteTrade
-}
 
 // SendTransactionAction represents an action to send a transaction
 type SendTransactionAction struct {
@@ -64,4 +50,14 @@ type MEVShareAction struct {
 
 func (a MEVShareAction) Type() ActionType {
 	return ActionTypeMEVShare
+}
+
+// KeyValueSetAction represents an action to update a key-value store
+type KeyValueSetAction struct {
+	Key   string
+	Value string
+}
+
+func (a KeyValueSetAction) Type() ActionType {
+	return ActionSetKeyValue
 }
