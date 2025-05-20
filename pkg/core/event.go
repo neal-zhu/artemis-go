@@ -1,6 +1,8 @@
 package core
 
-import "github.com/ethereum/go-ethereum/common"
+import (
+	"github.com/ethereum/go-ethereum/core/types"
+)
 
 const (
 	EventTypeBlockHeader EventType = iota
@@ -34,14 +36,7 @@ func (e TransactionEvent) Type() EventType {
 
 // LogEvent represents a new log event
 type LogEvent struct {
-	Address     string
-	Topics      []common.Hash
-	Data        []byte
-	BlockNumber uint64
-	TxHash      string
-	TxIndex     uint
-	BlockHash   string
-	Index       uint
+	types.Log
 }
 
 func (e LogEvent) Type() EventType {

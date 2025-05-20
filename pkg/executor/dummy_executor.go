@@ -15,6 +15,6 @@ func NewDummyExecutor() *DummyExecutor {
 }
 
 func (e *DummyExecutor) Execute(ctx context.Context, action core.Action) error {
-	fmt.Printf("DummyExecutor: Received action of type %v\n", action.Type())
+	fmt.Printf("DummyExecutor: Received action %+v\n", action)
 	return nil
 }

@@ -14,19 +14,18 @@ func NewSimpleHeaderPrintStrategy() *SimpleHeaderPrintStrategy {
 }
 
 func (s *SimpleHeaderPrintStrategy) Process(ctx context.Context, event core.Event) ([]core.Action, error) {
-	if event.Type() != core.EventTypeBlockHeader {
+	if event.Type() != core.EventTypeLog {
 		return nil, nil
 	}
 
-	headerEvent, ok := event.(core.BlockHeaderEvent)
+	headerEvent, ok := event.(core.LogEvent)
 	if !ok {
-		return nil, fmt.Errorf("invalid event type: expected BlockHeaderEvent")
+		return nil, fmt.Errorf("invalid event type: expected LogEvent")
 	}
 
 	fmt.Printf("New block header received:\n")
 	fmt.Printf("  Block Number: %d\n", headerEvent.BlockNumber)
 	fmt.Printf("  Block Hash: %s\n", headerEvent.BlockHash)
-	fmt.Printf("  Timestamp: %d\n", headerEvent.Timestamp)
 
 	return nil, nil
 }
