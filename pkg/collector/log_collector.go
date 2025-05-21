@@ -68,8 +68,21 @@ func (c *LogCollector) Events() <-chan core.Event {
 }
 
 func (c *LogCollector) collect(ctx context.Context) {
+	// Ensure eventChan is initialized (it should be by NewLogCollector, but good practice)
+	if c.eventChan == nil {
+		// This case should ideally not happen if NewLogCollector is always used.
+		c.eventChan = make(chan core.Event) // Consider a sensible default or panic.
+		fmt.Println("LogCollector: Warning - eventChan was nil and re-initialized in collect. This might indicate an issue.") // TODO: use logger
+	}
+
 	ticker := time.NewTicker(c.pollingInterval)
-	defer ticker.Stop()
+
+	// Defer the closing of eventChan and stopping of the ticker to ensure cleanup on exit.
+	defer func() {
+		ticker.Stop()
+		close(c.eventChan) // Close the event channel so consumers know there are no more events.
+		fmt.Println("LogCollector: eventChan closed and ticker stopped.") // TODO: use a logger
+	}()
 
 	// Initialize pollingBlockNumber on the first run if it was not provided (i.e., nil).
 	if c.pollingBlockNumber == nil {
