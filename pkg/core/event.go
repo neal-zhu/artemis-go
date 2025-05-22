@@ -37,6 +37,7 @@ func (e TransactionEvent) Type() EventType {
 // LogEvent represents a new log event
 type LogEvent struct {
 	types.Log
+	ChainId uint64
 }
 
 func (e LogEvent) Type() EventType {

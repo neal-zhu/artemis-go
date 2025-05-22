@@ -71,8 +71,14 @@ func (c *LogCollector) collect(ctx context.Context) {
 	// Ensure eventChan is initialized (it should be by NewLogCollector, but good practice)
 	if c.eventChan == nil {
 		// This case should ideally not happen if NewLogCollector is always used.
-		c.eventChan = make(chan core.Event) // Consider a sensible default or panic.
+		c.eventChan = make(chan core.Event)                                                                                   // Consider a sensible default or panic.
 		fmt.Println("LogCollector: Warning - eventChan was nil and re-initialized in collect. This might indicate an issue.") // TODO: use logger
+	}
+
+	chainId, err := c.client.ChainID(ctx)
+	if err != nil {
+		fmt.Printf("LogCollector: Failed to get chain ID: %v\n", err) // TODO: use a logger
+		return
 	}
 
 	ticker := time.NewTicker(c.pollingInterval)
@@ -80,7 +86,7 @@ func (c *LogCollector) collect(ctx context.Context) {
 	// Defer the closing of eventChan and stopping of the ticker to ensure cleanup on exit.
 	defer func() {
 		ticker.Stop()
-		close(c.eventChan) // Close the event channel so consumers know there are no more events.
+		close(c.eventChan)                                                // Close the event channel so consumers know there are no more events.
 		fmt.Println("LogCollector: eventChan closed and ticker stopped.") // TODO: use a logger
 	}()
 
@@ -174,7 +180,7 @@ func (c *LogCollector) collect(ctx context.Context) {
 				// fmt.Printf("LogCollector: Found %d logs for %s between %s and %s\n", len(logs), c.rpcUrl, query.FromBlock.String(), query.ToBlock.String()) // TODO: use a logger with debug level
 				for _, logEntry := range logs {
 					select {
-					case c.eventChan <- core.LogEvent{Log: logEntry}:
+					case c.eventChan <- core.LogEvent{Log: logEntry, ChainId: chainId.Uint64()}:
 					case <-ctx.Done():
 						fmt.Println("LogCollector: Context done during event send, stopping.") // TODO: use a logger
 						return

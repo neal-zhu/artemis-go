@@ -20,10 +20,10 @@ import (
 // strategy.
 func main() {
 	appCtx, appCancel := context.WithCancel(context.Background()) // Renamed for clarity
-	defer appCancel() // Ensures cancellation if main exits for other reasons (e.g., panic) or after engine.Stop() completes successfully.
+	defer appCancel()                                             // Ensures cancellation if main exits for other reasons (e.g., panic) or after engine.Stop() completes successfully.
 
 	logCollector, err := collector.NewLogCollector(
-		"http://bsc_bnb.rpc.cobo.one",
+		"",
 		[]common.Address{
 			common.HexToAddress("0x1a44076050125825900e736c501f859c50fE728c"),
 		},
